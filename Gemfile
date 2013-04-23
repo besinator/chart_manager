@@ -4,6 +4,12 @@ gem 'rails', '3.2.11'
 
 gem 'pg', '0.15.1'
 
+gem 'bcrypt-ruby', '3.0.1'
+
+gem 'rails_admin'
+
+gem "ffaker", require: false
+gem "therubyracer"
 
 # Gems used only for assets and not required
 # in production environments by default.
@@ -21,4 +27,9 @@ end
 
 group :test do
   gem 'capybara', '1.1.2'
+  gem "shoulda-matchers"
+  gem "minitest"
 end
+
+
+gem "devise"

@@ -2,9 +2,10 @@
 <html>
 <head>
   <title>ChartManager</title>
-  <%= stylesheet_link_tag    "application", :media => "all" %>
-  <%= javascript_include_tag "application" %>
+  <%= yield :script %>
+
   <%= csrf_meta_tags %>
+  
 </head>
 <body>
 
