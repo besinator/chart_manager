@@ -104,7 +104,7 @@ Ext.define('CM.controller.Charts', {
 // access selected rows type data
 /*
 var record = Ext.getCmp('chart_tree').getSelectedChart();
-alert(record.data.chart_config.get('title'));
+alert(record.getChartConfig().get('title'));
 */
 
   }

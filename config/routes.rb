@@ -3,6 +3,8 @@ ChartManager::Application.routes.draw do
   mount RailsAdmin::Engine => '/admin', :as => 'rails_admin'
 
 	resources :charts
+	resources :logins
+	
   root to: 'index#index'
   
 

@@ -9,6 +9,15 @@ Ext.define('CM.view.chart.Form', {
   initComponent: function() {
     this.items = [{
       xtype: 'form',
+      //title: 'Chart Form',
+      id: 'chart_form',
+      layout: 'form',
+      bodyPadding: '5 5 5 5',
+      width: 350,
+      fieldDefaults: {
+      	msgTarget: 'side',
+      	labelWidth: 75
+      },
       items: [{
         xtype: 'hidden',
         name : 'id',
@@ -16,7 +25,7 @@ Ext.define('CM.view.chart.Form', {
       }, {
         xtype: 'textfield',
         name : 'name',
-        fieldLabel: 'Name'
+        fieldLabel: 'Name',
       }, {
         xtype: 'textfield',
         name : 'group',
@@ -25,7 +34,7 @@ Ext.define('CM.view.chart.Form', {
         xtype: 'textfield',
         name : 'chart_type',
         fieldLabel: 'Type'
-      }]
+      }],
     }];
 
     this.buttons = [{

@@ -40,14 +40,22 @@ Ext.define('CM.model.Chart', {
     { name: 'name', type: 'string' },
     { name: 'group', type: 'string' },
     { name: 'chart_type', type: 'string' },
+    //{ name: 'created_at', type: 'date' },
+    //{ name: 'updated_at', type: 'date' },
     /*
-    { name: 'created_at', type: 'date' },
-    { name: 'updated_at', type: 'date' },
+    //ChartConfig nested model mapping - to make it accesible from from
+    { name: 'chart_config_id', type: 'int', mapping: 'chart_config.id' },
+  	{ name: 'chart_config_chart_id', type: 'int', mapping: 'chart_config.chart_id' },
+    { name: 'chart_config_title', type: 'string', mapping: 'chart_config.title' },
+    { name: 'chart_config_subtitle', type: 'string', mapping: 'chart_config.subtitle' },
+    { name: 'chart_config_xtitle', type: 'string', mapping: 'chart_config.xtitle' },
+    { name: 'chart_config_ytitle', type: 'string', mapping: 'chart_config.ytitle' },
     */
+    
   ],
   
   hasOne: [{ 
-  	name:'chart_config',
+  	name:'chart_config_attributes',
     model:'CM.model.ChartConfig',
     getterName:'getChartConfig',
     setterName:'setChartConfig',
@@ -58,7 +66,7 @@ Ext.define('CM.model.Chart', {
   hasMany: [{ 
   	foreignKey: 'chart_id',          			/* rule 1.3, 1.5 */
     associationKey: 'regular_serie',    		/* rule 1.4, 1.5 */
-  	name: 'regular_series',								/* rule 1.6 */
+  	name: 'regular_serie_attributes',								/* rule 1.6 */
   	model: 'CM.model.RegularSerie.Config'	/* rule 1.7 */
   }],
 
@@ -75,9 +83,11 @@ Ext.define('CM.model.Chart', {
       messageProperty: 'errors'
     },
     writer: {
-      //redefine getRecordData method
+      //redefine getRecordData method to include all nested models
       getRecordData: function(record) {
-        return { chart: record.data };
+      	Ext.apply(record.data,record.getAssociatedData());
+    		return { chart: record.data };
+        //return { chart: data };
       }
     }
   },
