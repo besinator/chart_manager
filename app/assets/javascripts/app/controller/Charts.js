@@ -9,12 +9,6 @@ Ext.define('CM.controller.Charts', {
     'chart.Form'
   ],
 
-	//create getter methods for chart_tree (use if only one elemnt is there, because it will find first one
-  refs: [{
-    ref: 'tree',
-    selector: 'chart_tree'
-  }],
-
   init: function() {
     this.control({
       'chart_tree': {
@@ -42,7 +36,7 @@ Ext.define('CM.controller.Charts', {
   },
 
   editChart: function() {
-    var record = this.getTree().getSelectedChart();
+    var record = Ext.getCmp('chart_tree').getSelectedChart();
     var view = Ext.widget('chart_form');
     view.down('form').loadRecord(record);
   },
@@ -91,7 +85,7 @@ Ext.define('CM.controller.Charts', {
   },
 
   deleteChart: function() {
-    var record = this.getTree().getSelectedChart();
+    var record = Ext.getCmp('chart_tree').getSelectedChart();
 
     if (record) {
       var store = this.getChartsStore();
@@ -101,7 +95,7 @@ Ext.define('CM.controller.Charts', {
   },
 
   selectionChange: function(selectionModel, selections) {
-    var tree = this.getTree();
+    var tree = Ext.getCmp('chart_tree');
     if (selections.length > 0) {
       tree.enableRecordButtons();
     } else {
@@ -109,8 +103,8 @@ Ext.define('CM.controller.Charts', {
     }
 // access selected rows type data
 /*
-var record = this.getTree().getSelectedChart();
-alert(record.data.chart_type);
+var record = Ext.getCmp('chart_tree').getSelectedChart();
+alert(record.data.chart_config.get('title'));
 */
 
   }

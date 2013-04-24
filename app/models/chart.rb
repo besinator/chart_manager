@@ -5,4 +5,7 @@ class Chart < ActiveRecord::Base
   has_many :regular_serie, dependent: :destroy
   
   belongs_to :user
+  	#def as_json(options={})
+   	#	super(options.merge(:include => chart_config))
+  	#end
 end

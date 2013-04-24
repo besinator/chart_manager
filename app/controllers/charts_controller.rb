@@ -1,12 +1,14 @@
 class ChartsController < ApplicationController
-  respond_to :js
+  respond_to :json
 
   def index
   	current_user = User.first
     charts = current_user.charts.all
+    #charts = Chart.where(:id => current_user.id)
 		
+		#include in chart respond also chart_config, regular_serie and regular_serie_datum (data) => all belonging to chart
     respond_with(charts) do |format|
-      format.json
+      format.json { render :json => charts.to_json(:include => ['chart_config','regular_serie' => { :include => ['regular_serie_datum'] }]) }
     end
   end
 

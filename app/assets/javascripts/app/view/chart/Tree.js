@@ -8,11 +8,11 @@ Ext.define('CM.view.chart.Tree' ,{
   initComponent: function() {
     this.columns = [
       { header: 'Name',  dataIndex: 'name',  flex: 1 },
-      { header: 'Group',  dataIndex: 'group',  flex: 1 },
+      { header: 'Group',  dataIndex: 'group',  flex: 1, hidden: true },
       { header: 'Type', dataIndex: 'chart_type', flex: 1 },
       /*
-      { header: 'Created', dataIndex: 'created_at', flex: 1 },
-      { header: 'Updated', dataIndex: 'updated_at', flex: 1 }
+      { header: 'Created', dataIndex: 'created_at', flex: 1, hidden: true },
+      { header: 'Updated', dataIndex: 'updated_at', flex: 1, hidden: true }
       */
     ];
 

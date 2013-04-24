@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130422231345) do
+ActiveRecord::Schema.define(:version => 20130423161511) do
 
   create_table "admins", :force => true do |t|
     t.string   "email",                  :default => "", :null => false
@@ -60,9 +60,9 @@ ActiveRecord::Schema.define(:version => 20130422231345) do
   end
 
   create_table "regular_serie_data", :force => true do |t|
-    t.integer  "regular_serie_id"
     t.string   "x_field"
     t.float    "data_index"
+    t.integer  "regular_serie_id"
     t.datetime "created_at",       :null => false
     t.datetime "updated_at",       :null => false
   end

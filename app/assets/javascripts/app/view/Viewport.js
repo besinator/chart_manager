@@ -1,11 +1,21 @@
 Ext.define('CM.view.Viewport', {
   extend: 'Ext.container.Viewport',
 
-  layout: 'fit',
+  layout: 'border',
 
   items: [{
+  	region: 'west',
     xtype: 'chart_tree',
-    title: 'Charts',
+    title: 'Chart list',
+    id: 'chart_tree',
+    width: 210,
+    collapsible: true,
     html : 'Treeview of charts'
+  },
+  {
+  	region: 'center',
+    xtype: 'panel',
+    title: 'Chart',
+    html : 'Blank'
   }]
 });

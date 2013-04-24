@@ -4,6 +4,7 @@ ChartManager::Application.routes.draw do
 
 	resources :charts
   root to: 'index#index'
+  
 
   # This redirect is a work around for the use of Extjs4 with Rails assets pipeline:
   # for "test" and "production" mode images are now retrived this way
