@@ -7,6 +7,7 @@ Ext.define('CM.view.chart.Tree' ,{
 
   initComponent: function() {
     this.columns = [
+    	{ header: 'Id',  dataIndex: 'id',  flex: 1, hidden: true },
       { header: 'Name',  dataIndex: 'name',  flex: 1 },
       { header: 'Group',  dataIndex: 'group',  flex: 1, hidden: true },
       { header: 'Type', dataIndex: 'chart_type', flex: 1 },

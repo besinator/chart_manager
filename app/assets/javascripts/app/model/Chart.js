@@ -42,6 +42,7 @@ Ext.define('CM.model.Chart', {
     { name: 'chart_type', type: 'string' },
     //{ name: 'created_at', type: 'date' },
     //{ name: 'updated_at', type: 'date' },
+
     /*
     //ChartConfig nested model mapping - to make it accesible from from
     { name: 'chart_config_id', type: 'int', mapping: 'chart_config.id' },
