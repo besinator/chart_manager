@@ -21,11 +21,14 @@ Ext.define('CM.store.Charts', {
       });
       */
     },
-    update: function() {
-      //console.log(arguments);
+    update: function(store, records, index, eOpts) {
+      //console.log(records);
     },
     beforesync: function() {
       //console.log(arguments);
+    },
+    add: function(store, records, index, eOpts) {
+      console.log(records);
     }
   }
   

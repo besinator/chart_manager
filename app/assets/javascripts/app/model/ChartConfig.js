@@ -1,5 +1,7 @@
 Ext.define('CM.model.ChartConfig', {
   extend: 'Ext.data.Model',
+  
+  idProperty: 'id',
   fields: [
   	{ name: 'id', type: 'int' },
   	{ name: 'chart_id', type: 'int' },

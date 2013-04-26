@@ -10,7 +10,6 @@ Ext.define('CM.view.chart.Form', {
     this.items = [{
       xtype: 'form',
       //title: 'Chart Form',
-      id: 'chart_form',
       layout: 'form',
       bodyPadding: '5 5 5 5',
       width: 350,
@@ -46,6 +45,22 @@ Ext.define('CM.view.chart.Form', {
         xtype: 'textfield',
         name : 'chart_config.ytitle',
         fieldLabel: 'Y axis title'
+      }, {
+        xtype: 'textfield',
+        name : 'regular_serie_0.name',
+        fieldLabel: 'serie_name'
+      }, {
+        xtype: 'textfield',
+        name : 'regular_serie_0.series_type',
+        fieldLabel: 'series_type'
+      }, {
+        xtype: 'textfield',
+        name : 'regular_serie_0.dash_style',
+        fieldLabel: 'dash_style'
+      }, {
+        xtype: 'textfield',
+        name : 'regular_serie_0.color',
+        fieldLabel: 'color'
       }],
     }];
 
@@ -60,7 +75,8 @@ Ext.define('CM.view.chart.Form', {
 
     this.callParent(arguments);
   },
-  
+
+	//function to dynamically add form fields for regular series
   addRegularSerieFormFields: function(series) {
   	//vars for creating structured field names
   	var serie_property = "regular_serie";
@@ -92,6 +108,10 @@ Ext.define('CM.view.chart.Form', {
   				//create form fields for serie properies (include series number - i)
   				field_name = serie_property+"_"+i+"."+property;
   				field_label = property;
+  				//if field_name already exists, dont create field
+  				if(this.down('form').getForm().findField(field_name)) {
+  					continue;
+  				}
   			}
   			//create field and append to form
   			var temp_field = Ext.create('Ext.form.field.Text', {

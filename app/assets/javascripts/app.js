@@ -1,6 +1,6 @@
 /**
  *= require_self
-  *= require extjs4/Chart/ux/Highcharts
+ *= require extjs4/Chart/ux/Highcharts
  *= require extjs4/Chart/ux/Highcharts/Serie
  *= require extjs4/Chart/ux/Highcharts/LineSerie
  *= require extjs4/Chart/ux/Highcharts/SplineSerie
@@ -20,7 +20,7 @@
  *= require extjs4/Chart/ux/Highcharts/RangeSerie
  *= require extjs4/Chart/ux/Highcharts/ScatterSerie
  *= require extjs4/Chart/ux/Highcharts/WaterfallSerie
- */
+*/
 
 //Instance of application
 Ext.application({

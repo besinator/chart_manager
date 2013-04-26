@@ -5,6 +5,7 @@ Ext.define('CM.model.RegularSerie.Config', {
 		'CM.model.RegularSerie.Data'
   ],
   
+  idProperty: 'id',
   fields: [
     { name: 'id', type: 'int' },
     { name: 'chart_id', type: 'int' },

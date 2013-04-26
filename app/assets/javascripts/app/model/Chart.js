@@ -34,7 +34,8 @@ Ext.define('CM.model.Chart', {
 		'CM.model.ChartConfig',
 		'CM.model.RegularSerie.Config'
   ],
-    
+  
+  idProperty: 'id',
   fields: [
     { name: 'id', type: 'int' },
     { name: 'name', type: 'string' },
@@ -42,7 +43,7 @@ Ext.define('CM.model.Chart', {
     { name: 'chart_type', type: 'string' },
     //{ name: 'created_at', type: 'date' },
     //{ name: 'updated_at', type: 'date' },
-
+    
     /*
     //ChartConfig nested model mapping - to make it accesible from from
     { name: 'chart_config_id', type: 'int', mapping: 'chart_config.id' },
@@ -53,6 +54,11 @@ Ext.define('CM.model.Chart', {
     { name: 'chart_config_ytitle', type: 'string', mapping: 'chart_config.ytitle' },
     */
     
+  ],
+  
+  validations: [
+    { type: 'presence', field: 'name' },
+    { type: 'presence', field: 'chart_type' },
   ],
   
   hasOne: [{ 
@@ -71,7 +77,6 @@ Ext.define('CM.model.Chart', {
   	model: 'CM.model.RegularSerie.Config'	/* rule 1.7 */
   }],
 
-	idProperty: 'id',
   proxy: {
     url: '/charts',
     type: 'rest',
@@ -86,9 +91,13 @@ Ext.define('CM.model.Chart', {
     writer: {
       //redefine getRecordData method to include all nested models
       getRecordData: function(record) {
+      	//include all nested data within record.data
       	Ext.apply(record.data,record.getAssociatedData());
+      	//if no series are defined => remove property from record.data
+      	if(record.data.regular_serie_attributes && record.data.regular_serie_attributes.length == 0) {
+      		delete record.data.regular_serie_attributes;
+      	}
     		return { chart: record.data };
-        //return { chart: data };
       }
     }
   },
