@@ -91,13 +91,32 @@ Ext.define('CM.model.Chart', {
     writer: {
       //redefine getRecordData method to include all nested models
       getRecordData: function(record) {
-      	//include all nested data within record.data
-      	Ext.apply(record.data,record.getAssociatedData());
-      	//if no series are defined => remove property from record.data
-      	if(record.data.regular_serie_attributes && record.data.regular_serie_attributes.length == 0) {
-      		delete record.data.regular_serie_attributes;
+        var data = record.data;
+      	//include all nested data within data
+      	Ext.apply(data,record.getAssociatedData());
+      	
+      	/*
+      	//if no series are defined => remove property from data
+      	if(data.regular_serie_attributes && data.regular_serie_attributes.length == 0) {
+      		delete data.regular_serie_attributes;
       	}
-    		return { chart: record.data };
+				
+				//if no regular series data are defined => remove property from data
+      	for(var i in data.regular_serie_attributes) {
+      		if(data.regular_serie_attributes[i].regular_serie_datum_attributes && 
+							data.regular_serie_attributes[i].regular_serie_datum_attributes.length == 0) {
+      			delete data.regular_serie_attributes[i].regular_serie_datum_attributes;
+      		}
+      	}
+	*/
+				//gather regular serie attributes from store
+				data['regular_serie_attributes'] = [];
+				for(var i in record.regular_serie_attributes().data.items) {
+					data['regular_serie_attributes'][i] = record.regular_serie_attributes().data.items[i].data;
+				}
+				
+				//return data in specified format => {"chart":{"name":"chart1","id":1, ... },"chart": ... }
+    		return { chart: data };
       }
     }
   },

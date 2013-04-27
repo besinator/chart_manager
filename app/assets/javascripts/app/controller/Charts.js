@@ -30,21 +30,33 @@ Ext.define('CM.controller.Charts', {
     });
   },
 
+//-------------------------------------------------------------------------------------
+//addChart - open empty form
+//-------------------------------------------------------------------------------------
   addChart: function() {
     var formWin = Ext.widget('chart_form');
+    formWin.setFieldsToDefaults();
     formWin.show();
   },
-
+  
+//-------------------------------------------------------------------------------------
+//editChart - open form with preset record data
+//-------------------------------------------------------------------------------------
   editChart: function() {
   	var record = Ext.getCmp('chart_tree').getSelectedChart(); //get selected record from grid
     
     Ext.apply(record.data,record.getAssociatedData()); //merge record data with all associated data (chart model with assoc models char_config, ...
     
     var formWin = Ext.widget('chart_form'); //get form window
-
-    formWin.addRegularSerieFormFields(record.data.regular_serie_attributes); //dynamically add fields to according to the number of existing series
     
+    for(var i = 1; i<record.data.regular_serie_attributes.length; i++)
+    {
+    	formWin.addRegularSerieTab();
+    }
+    //formWin.addRegularSerieFormFields(record.data.regular_serie_attributes); //dynamically add fields to according to the number of existing series
+    //-------------------------------------------------------------------------------------
     //populate form field with data
+    //-------------------------------------------------------------------------------------
     for(var property in record.data) {
     	var formField; //field of form to be written to
     	var base_property = ""; //first part of formField name (eg chart_config.title)
@@ -90,8 +102,14 @@ Ext.define('CM.controller.Charts', {
     		}
     	}
     }
+    //-------------------------------------------------------------------------------------
+    //-------------------------------------------------------------------------------------
+    //-------------------------------------------------------------------------------------
   },
 
+//-------------------------------------------------------------------------------------
+//createOrUpdateChart - after save button on form - create/update store and db
+//-------------------------------------------------------------------------------------
   createOrUpdateChart: function(button) {
     var win = button.up('window');
     var form = win.down('form');
@@ -153,11 +171,13 @@ Ext.define('CM.controller.Charts', {
     		}
     	}
 		}
-
-		//
+		//-------------------------------------------------------------------------------------
+		//-------------------------------------------------------------------------------------
+		//-------------------------------------------------------------------------------------
+		
+		//create new model isntance (filled with chart data) - will be added to store
     var chart = Ext.create('CM.model.Chart', val_chart);
-    //console.log(chart.data.chart_config_attributes);
-
+    
 		//assign chart config to chart record
     chart.beginEdit();
     	chart.data.chart_config_attributes = {};
@@ -166,21 +186,20 @@ Ext.define('CM.controller.Charts', {
 			}
 		chart.endEdit();
 		
-		//assign chart series to chart record
+		//assign regular series to chart record - in store writer manually get this data and put to  			
+		//server response
 		chart.beginEdit();
-    	//create array of series
-    	chart.data.regular_serie_attributes = [];
-    	for(var i in val_regular_serie) {
-    		//create empty obj for serie
-    		chart.data.regular_serie_attributes[i] = {};
-    		//assign values to record
-    		for(var property in val_regular_serie[i])	{
-    			chart.data.regular_serie_attributes[i][property] = val_regular_serie[i][property];
-    		}
-    	}
+		for(var i in val_regular_serie) {
+			chart.regular_serie_attributes().data.items[i] = {};
+			chart.regular_serie_attributes().data.items[i].data = {}; 
+			for(var property in val_regular_serie[i])	{
+				chart.regular_serie_attributes().data.items[i].data[property] = 
+						val_regular_serie[i][property];
+			}
+		}
 		chart.endEdit();
-    console.log(chart.data);
-    
+
+		
     //validate chart records
     var errors = chart.validate();
 
@@ -191,17 +210,25 @@ Ext.define('CM.controller.Charts', {
 			//if record exists - only update record
       if (chartRecord) {
         chartRecord.set(val_chart);	//update chart
-        
-        //update chart_record
+        //update chart_config
         //if chartRecord.getChartConfig() is not defined (when model has been just created and stored)
         //then catch error and assign values manually - manual assign doesnt work for loaded data
         //from database => wtf??? => created this workaroud
         try {
         	var chartConfigRecord = chartRecord.getChartConfig();
         	chartConfigRecord.set(val_chart_config);
+        	
+					for(var i in val_regular_serie)
+					{
+						var regularSerieRecord = chartRecord.regular_serie_attributes().data.items[i];
+						regularSerieRecord.set(val_regular_serie[i]);
+					}
         }
+        //manually set chart_config - this wont happen, if store is loaded from dbimmediatly
+        // after chart record creation
         catch(err) {
-        	//assign chart config valuest to record and commit changes to store
+        	console.log("chart record wasnt saved: "+err);
+        	//assign chart config values manually to record and commit changes to store
         	chartRecord.beginEdit();
         		for(var property in val_chart_config)	{
         			//update chart config
@@ -210,8 +237,6 @@ Ext.define('CM.controller.Charts', {
         	chartRecord.endEdit();
         	chartRecord.commit();
     		}
-    		
-
         chartRecord.setDirty();	//set dirty, to be sure the record is saved
       //else - create record - add it to store
       } else {
@@ -221,6 +246,11 @@ Ext.define('CM.controller.Charts', {
 			//synchronize store - update/create and close window
       store.sync({
         success: function() {
+        	//if record was created, then load store from db - fixes issues with not up to date data
+        	if(!chartRecord) {
+        		store.load();
+        	}
+        	//after successfull update/create close form
           win.close();
         },
         failure: function(batch, options) {
@@ -241,6 +271,9 @@ Ext.define('CM.controller.Charts', {
     }
   },
 
+//-------------------------------------------------------------------------------------
+//deleteChart - delete record
+//-------------------------------------------------------------------------------------
   deleteChart: function() {
     var record = Ext.getCmp('chart_tree').getSelectedChart();
 
@@ -251,6 +284,9 @@ Ext.define('CM.controller.Charts', {
     }
   },
 
+//-------------------------------------------------------------------------------------
+//selectionChange - enable/disable buttons according to selection
+//-------------------------------------------------------------------------------------
   selectionChange: function(selectionModel, selections) {
     var tree = Ext.getCmp('chart_tree');
     if (selections.length > 0) {
@@ -258,12 +294,6 @@ Ext.define('CM.controller.Charts', {
     } else {
       tree.disableRecordButtons();
     }
-// access selected rows type data
-/*
-var record = Ext.getCmp('chart_tree').getSelectedChart();
-alert(record.getChartConfig().get('title'));
-*/
-
-  }
-
+	},
+	
 });

@@ -10,7 +10,7 @@ Ext.define('CM.store.Charts', {
 
 	//for debuging
   listeners: {
-    load: function() {
+    load: function(store, records, index, eOpts) {
       //console.log(arguments);
       /*
       var chart = this.first();
@@ -20,15 +20,16 @@ Ext.define('CM.store.Charts', {
       	console.log("RegularSerie: " + serie.get('name'));
       });
       */
+      //console.log(records);
     },
     update: function(store, records, index, eOpts) {
       //console.log(records);
     },
-    beforesync: function() {
-      //console.log(arguments);
+    beforesync: function(store, records, index, eOpts) {
+      //console.log(records);
     },
     add: function(store, records, index, eOpts) {
-      console.log(records);
+      //console.log(records);
     }
   }
   

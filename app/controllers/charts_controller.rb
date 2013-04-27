@@ -32,6 +32,9 @@ class ChartsController < ApplicationController
 	#-----------------------------------------------------
   def create
   	current_user = User.first
+  	p "--------------------------------------------\n\n\n\n\n\n"
+  	p params[:chart]
+  	p "--------------------------------------------\n\n\n\n\n\n"
   	chart = current_user.charts.new(params[:chart])
     chart.save
 		
